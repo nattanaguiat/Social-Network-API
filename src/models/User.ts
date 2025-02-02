@@ -18,7 +18,6 @@ const UserSchema = new Schema<IUser>(
             type: String,
             required: true,
             unique: true,
-            // regex to match a valid email address.  at least one character before the @ symbol, at least one character between the @ and . symbols, and at least one character after the . symbol
             match: [/.+@.+\..+/, 'Please enter a valid email address']
         },
         thoughts: [
@@ -49,12 +48,10 @@ const UserSchema = new Schema<IUser>(
     }
 );
 
-// get total count of friends on retrieval
 UserSchema.virtual('friendCount').get(function() {
     return this.friends.length;
 });
 
-// initialize the User model
 const User = model<IUser>('User', UserSchema);
 
 export default User;
