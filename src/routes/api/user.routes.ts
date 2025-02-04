@@ -27,7 +27,7 @@ router.get('/users/:id', async (req, res) => {
 router.post('/users', (req, res) => {
 
     try {
-        const newUser = new User({ name: req.body.name, email: req.body.email })
+        const newUser = new User({ usernamename: req.body.username, email: req.body.email })
         newUser.save();
         res.json(newUser)
     } catch (error) {
