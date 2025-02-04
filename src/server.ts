@@ -1,6 +1,7 @@
 import express from 'express';
 // import routes from './routes/index.js';
 import connectDB from './config/connection.js';
+import { MongoClient } from 'mongodb';
 
 connectDB();
 

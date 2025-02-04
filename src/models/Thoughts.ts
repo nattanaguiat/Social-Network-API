@@ -15,6 +15,27 @@ interface IReaction extends Document {
     createdAt: Date;
 }
 
+const reactionSchema = new Schema<IReaction>({
+    reactionId: {
+        type: Schema.Types.ObjectId,
+        default: () => new Types.ObjectId()
+    },
+    reactionBody: {
+        type: String,
+        required: true,
+        maxLength: 280
+    },
+    username: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        get: (createdAt: Date): string => createdAt.toLocaleString()
+    } as unknown as Date
+});
+
 
 const thoughtSchema = new Schema<IThought>(
     {
@@ -43,27 +64,6 @@ const thoughtSchema = new Schema<IThought>(
         id: false
     }
 );
-
-const reactionSchema = new Schema<IReaction>({
-    reactionId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId()
-    },
-    reactionBody: {
-        type: String,
-        required: true,
-        maxLength: 280
-    },
-    username: {
-        type: String,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        get: (createdAt: Date): string => createdAt.toLocaleString()
-    } as unknown as Date
-});
 
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
