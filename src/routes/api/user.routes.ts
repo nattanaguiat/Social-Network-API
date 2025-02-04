@@ -1,10 +1,9 @@
 import express from 'express'
 import User from '../../models/User.js';
-import db from './config/connection.js'
 
-const app = express();
+const router = express.Router();
 
-app.get('/users', async (_req, res) => {
+router.get('/users', async (_req, res) => {
     try {
         const result = await User.find({})
         res.status(200).json(result)
@@ -14,7 +13,7 @@ app.get('/users', async (_req, res) => {
     }
 })
 
-app.get('/users/:id', async (req, res) => {
+router.get('/users/:id', async (req, res) => {
     const { id } = req.params;
 
    try {
@@ -25,7 +24,7 @@ app.get('/users/:id', async (req, res) => {
    }
 })
 
-app.post('/users', (req, res) => {
+router.post('/users', (req, res) => {
 
     try {
         const newUser = new User({ name: req.body.name, email: req.body.email })
@@ -37,11 +36,11 @@ app.post('/users', (req, res) => {
     }
 })
 
-app.put('/users/:id', async (req, res) => {
+router.put('/users/:id', async (req, res) => {
 
     try {
         const user = await User.findByIdAndUpdate( req.params.id, {
-            userName: req.body.userName,
+            username: req.body.userName,
             email: req.body.email,
             thoughts: req.body.thoughts,
             friends: req.body.friends
@@ -53,7 +52,7 @@ app.put('/users/:id', async (req, res) => {
     }
 })
 
-app.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', async (req, res) => {
 
     try {
         const result = await User.findByIdAndDelete({
@@ -66,3 +65,5 @@ app.delete('/users/:id', async (req, res) => {
         res.status(500).json({ error: 'Something went wrong' });
     }
 })
+
+export { router as userRouter }
