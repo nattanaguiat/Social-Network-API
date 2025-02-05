@@ -1,9 +1,9 @@
 import express from 'express';
 import Thoughts from '../../models/Thoughts.js';
 
-const router = express.Router();
+const app = express.Router();
 
-router.get('/thoughts', async (_req, res) => {
+app.get('/thoughts', async (_req, res) => {
     try {
         const result = await Thoughts.find({})
         res.status(200).json(result)
@@ -13,7 +13,7 @@ router.get('/thoughts', async (_req, res) => {
     }
 })
 
-router.get('/thoughts/:id', async (req, res) => {
+app.get('/thoughts/:id', async (req, res) => {
     const { id } = req.params;
 
    try {
@@ -24,9 +24,9 @@ router.get('/thoughts/:id', async (req, res) => {
    }
 })
 
-// router.post()
+// app.post()
 
-router.put('/thoughts/:id', async (req, res) => {
+app.put('/thoughts/:id', async (req, res) => {
 
     try {
         const user = await Thoughts.findByIdAndUpdate( req.params.id, {
@@ -42,7 +42,7 @@ router.put('/thoughts/:id', async (req, res) => {
     }
 })
 
-router.delete('/thoughts/:id', async (req, res) => {
+app.delete('/thoughts/:id', async (req, res) => {
 
     try {
         const result = await Thoughts.findByIdAndDelete({
@@ -56,4 +56,4 @@ router.delete('/thoughts/:id', async (req, res) => {
     }
 })
 
-export { router as thoughtsRouter }
+export { app as thoughtsRouter }

@@ -1,5 +1,5 @@
-// import { Request, Response } from 'express';
+import { Request, Response } from 'express';
 
-// export const register = (req: Request, res: Response) => res.send("register");
+export const register = (_req: Request, res: Response) => res.send("register");
 
-// export const login = (req: Request, res: Response) => res.send("login");
+export const login = (_req: Request, res: Response) => res.send("login");
