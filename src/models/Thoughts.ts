@@ -1,18 +1,17 @@
 import {Schema, Types, model, type Document} from 'mongoose';
 
+interface IReaction extends Document {
+    reactionId: Types.ObjectId;
+    reactionBody: string;
+    username: string;
+    createdAt: Date;
+}
 
 interface IThought extends Document {
     thoughtText: string;
     createdAt: Date;
     username: string;
     reactions: IReaction[];
-}
-
-interface IReaction extends Document {
-    reactionId: Types.ObjectId;
-    reactionBody: string;
-    username: string;
-    createdAt: Date;
 }
 
 const reactionSchema = new Schema<IReaction>({
@@ -33,9 +32,8 @@ const reactionSchema = new Schema<IReaction>({
         type: Date,
         default: Date.now,
         get: (createdAt: Date): string => createdAt.toLocaleString()
-    } as unknown as Date
+    } as unknown as Date // cast to make typescript happy
 });
-
 
 const thoughtSchema = new Schema<IThought>(
     {
@@ -49,7 +47,7 @@ const thoughtSchema = new Schema<IThought>(
             type: Date,
             default: Date.now,
             get: (createdAt: Date): string => createdAt.toLocaleString()
-        } as unknown as Date, 
+        } as unknown as Date, // cast to make typescript happy
         username: {
             type: String,
             required: true
@@ -65,10 +63,13 @@ const thoughtSchema = new Schema<IThought>(
     }
 );
 
+// get total count of reactions on retrieval
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 });
 
+// initialize the Thought model
 const Thought = model<IThought>('Thought', thoughtSchema);
 
 export default Thought;
+

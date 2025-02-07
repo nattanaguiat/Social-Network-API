@@ -1,3 +1,5 @@
-import User from "./User";
+import User from "./User.js";
+import Thoghts from "./Thoughts.js"
 
-export { User };
+
+export { User, Thoghts };

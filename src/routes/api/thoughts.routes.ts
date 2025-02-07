@@ -1,11 +1,11 @@
 import express from 'express';
-import Thoughts from '../../models/Thoughts.js';
+import { Thoghts } from '../../models/index.js';
 
 const app = express.Router();
 
 app.get('/thoughts', async (_req, res) => {
     try {
-        const result = await Thoughts.find({})
+        const result = await Thoghts.find({})
         res.status(200).json(result)
     } catch (error) {
         console.log('Uh Oh, something went wrong');
@@ -17,7 +17,7 @@ app.get('/thoughts/:id', async (req, res) => {
     const { id } = req.params;
 
    try {
-    const user = await Thoughts.findOne({ _id: id })
+    const user = await Thoghts.findOne({ _id: id })
     res.json(user);
    } catch (error) {
     res.status(500).json(error);
@@ -29,7 +29,7 @@ app.get('/thoughts/:id', async (req, res) => {
 app.put('/thoughts/:id', async (req, res) => {
 
     try {
-        const user = await Thoughts.findByIdAndUpdate( req.params.id, {
+        const user = await Thoghts.findByIdAndUpdate( req.params.id, {
             thoughtText: req.body.thoughtText,
             createdAt: req.body.createdAt,
             username: req.body.thoughts,
@@ -45,7 +45,7 @@ app.put('/thoughts/:id', async (req, res) => {
 app.delete('/thoughts/:id', async (req, res) => {
 
     try {
-        const result = await Thoughts.findByIdAndDelete({
+        const result = await Thoghts.findByIdAndDelete({
             _id: req.params.id
         })
         res.status(200).json(result);
