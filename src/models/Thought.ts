@@ -71,7 +71,5 @@ thoughtSchema.virtual('reactionCount').get(function() {
 // initialize the Thought model
 const Thought = model<IThought>('Thought', thoughtSchema);
 
-const Reaction = model<IReaction>('Thought', reactionSchema);
-
-export { Thought, Reaction };
+export default Thought;
 
