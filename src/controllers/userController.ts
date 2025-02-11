@@ -39,19 +39,12 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
 
     try {
-        const user = await User.findByIdAndUpdate( req.params.id, {
-            username: req.body.username,
-            email: req.body.email,
-            thoughts: req.body.thoughts,
-            friends: req.body.friends
-        })
-        res.json(user)
-        res.send("Item Updated")
-    } catch (error) {
-        console.log(error);
-        res.send(400).send('Server Error');
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: `Failed to update user. ${err}` });
     }
-}
+};
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
