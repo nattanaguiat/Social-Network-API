@@ -1,11 +1,11 @@
 import express from 'express'
-import User from '../../models/User.js';
+import { User } from '../../models/index';
 
 const app = express.Router();
 
-app.get('/users', async (_req, res) => {
+app.get('/', async (_req, res) => {
     try {
-        const result = await User.find({})
+        const result = await User.find()
         res.status(200).json(result)
     } catch (error) {
         console.log('Uh Oh, something went wrong');
@@ -13,7 +13,7 @@ app.get('/users', async (_req, res) => {
     }
 })
 
-app.get('/users/:id', async (req, res) => {
+app.get('/:id', async (req, res) => {
     const { id } = req.params;
 
    try {
@@ -24,7 +24,7 @@ app.get('/users/:id', async (req, res) => {
    }
 })
 
-app.post('/users', (req, res) => {
+app.post('/', (req, res) => {
 
     try {
         const newUser = new User({ usernamename: req.body.username, email: req.body.email })
@@ -36,7 +36,7 @@ app.post('/users', (req, res) => {
     }
 })
 
-app.put('/users/:id', async (req, res) => {
+app.put('/:id', async (req, res) => {
 
     try {
         const user = await User.findByIdAndUpdate( req.params.id, {
@@ -52,7 +52,7 @@ app.put('/users/:id', async (req, res) => {
     }
 })
 
-app.delete('/users/:id', async (req, res) => {
+app.delete('/:id', async (req, res) => {
 
     try {
         const result = await User.findByIdAndDelete({
