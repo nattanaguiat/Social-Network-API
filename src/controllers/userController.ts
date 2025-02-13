@@ -63,38 +63,28 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 };
 
-export const addFriend = async (req: Request, res: Response) => {
+export const addFriend = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = await User.findByIdAndUpdate(
-            req.params.userId, 
-            { $addToSet: { friends: req.params.friendId } }, // prevent duplicates 
-            { new: true }
-        );
-
-        if (!user) {
-            res.status(404).json({ message: 'User not found. Unable to add friend.' });
-        } else {
-            res.json(user);
-        }
+      const friend = await User.findById(req.params.friendId);
+      if (!friend) {
+        res.status(404).json({ message: "No user with this id!" });
+      }
+      const user = await User.findByIdAndUpdate(req.params.userId, { $addToSet: { friends: req.params.friendId } }, { new: true });
+      res.json(user);
     } catch (err) {
-        res.status(500).json({ message: `Failed to add friend. ${err}` });
+      res.status(500).json(err);
     }
-};
-
-export const removeFriend = async (req: Request, res: Response) => {
+  };
+  
+  export const removeFriend = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = await User.findByIdAndUpdate(
-            req.params.userId,
-            { $pull: { friends: req.params.friendId } },
-            { new: true }
-        );
-
-        if (!user) {
-            res.status(404).json({ message: 'User not found.' });
-        } else {
-            res.json(user);
-        }
+      const friend = await User.findById(req.params.friendId);
+      if (!friend) {
+        res.status(404).json({ message: "No user with this id!" });
+      }
+      const user = await User.findByIdAndUpdate(req.params.userId, { $pull: { friends: req.params.friendId } }, { new: true });
+      res.json(user);
     } catch (err) {
-        res.status(500).json({ message: `Failed to remove friend. ${err}` });
+      res.status(500).json(err);
     }
-};
+  };  

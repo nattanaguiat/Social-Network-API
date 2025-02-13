@@ -3,7 +3,7 @@ import { User } from '../models/index'
 
 import { Request, Response } from 'express';
 
-export const getAllThoghts = async (req: Request, res: Response) => {
+export const getAllThoughts = async (req: Request, res: Response) => {
     try {
         const thoughts = await Thought.find({})
         res.status(200).json(thoughts)
@@ -26,23 +26,16 @@ export const getSingleThought = async (req: Request, res: Response) => {
 
 export const createThought = async (req: Request, res: Response) => {
     try {
-        const thought = await Thought.create(req.body);
-
-        const user = await User.findByIdAndUpdate(
-            req.body.userId,
-            { $push: { thoughts: thought._id } },
-            { new: true }
-        );
-        
-        if(!user) {
-            res.status(404).json({ message: 'User not found.' });
-        } else{
-            res.json(thought);
-        }
+      const newThought = new Thought(req.body);
+      await newThought.save();
+      const user = await User.findOne({ username: newThought.username });
+      user?.thoughts.push(newThought._id as any);
+      await user?.save();
+      res.status(201).json(newThought);
     } catch (err) {
-        res.status(500).json({ message: `Failed to create thought. ${err}` });
+      res.status(400).json({ error: (err as Error).message });
     }
-};
+  };
 
 export const updateThought = async (req: Request, res: Response) => {
 

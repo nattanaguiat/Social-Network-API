@@ -1,14 +1,20 @@
-import express, { Router } from 'express';
-import { getAllThoghts, getSingleThought, createThought, updateThought, deleteThought, addReaction, removeReaction } from '../../controllers/thoughtController.js';
+import { Router } from 'express';
+
+// import controller
+import { getAllThoughts, getSingleThought, createThought, updateThought, deleteThought, addReaction, removeReaction } from '../../controllers/thoughtController.js';
 
 const router = Router();
 
-router.route('/').get(getAllThoghts).post(createThought);
+// /api/thoughts
+router.route('/').get(getAllThoughts).post(createThought);
 
+// /api/thoughts/:id
 router.route('/:id').get(getSingleThought).put(updateThought).delete(deleteThought);
 
+// /api/thoughts/:thoughtId/reactions
 router.route('/:thoughtId/reactions').post(addReaction);
 
-router.route('/:thoughtId/reactions/:reactionsId').delete(deleteThought);
+// /api/thoughts/:thoughtId/reactions/:reactionId
+router.route('/:thoughtId/reactions/:reactionId').delete(removeReaction);
 
-export default router
+export default router;
