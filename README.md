@@ -16,7 +16,7 @@ After cloning the repository and navigating to the project directory, the intall
 
 ## Usage
 
-Video Walkthrough: https://watch.screencastify.com/v/F5gDDdJApO8gxaUzhVYY
+Video Walkthrough: https://drive.google.com/file/d/1s-A9zhGIXOrhO1kdcLIAw5r6LULL-mtb/view
 
 To run the application we have to build the project first, then start the API Server and finally test the API endpoints.
 
