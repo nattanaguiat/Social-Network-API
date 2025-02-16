@@ -26,26 +26,18 @@ export const getSingleThought = async (req: Request, res: Response) => {
     }
 };
 
-export const createThought = async (req: Request, res: Response) => {
+export const createThought = async (req: Request, res: Response): Promise<void> => {
     try {
-        const thought = await Thought.create(req.body);
-
-        // add thought to user's thoughts array
-        const user = await User.findByIdAndUpdate(
-            req.body.userId,
-            { $push: { thoughts: thought._id } },
-            { new: true }
-        );
-        
-        if(!user) {
-            res.status(404).json({ message: 'User not found.' });
-        } else{
-            res.json(thought);
-        }
-    } catch (err) {
-        res.status(500).json({ message: `Failed to create thought. ${err}` });
+        const newThought = new Thought(req.body);
+        await newThought.save();
+        const user = await User.findOne({ username: newThought.username });
+        user?.thoughts.push(newThought._id as any);
+        await user?.save();
+        res.status(201).json(newThought);
+        } catch (err) {
+        res.status(400).json({ error: (err as Error).message });
     }
-};
+  };
 
 export const updateThought = async (req: Request, res: Response) => {
     try {
@@ -58,24 +50,17 @@ export const updateThought = async (req: Request, res: Response) => {
 
 export const deleteThought = async (req: Request, res: Response) => {
     try {
-        const thought = await Thought.findByIdAndDelete(req.params.id);
-
-        if (!thought) {
-            res.status(404).json({ message: 'Thought not found.' });
-        } else {
-            //delete from user's thoughts array
-            await User.findOneAndUpdate(
-                {username: thought.username},
-                { $pull: { thoughts: thought._id } },
-                { new: true }
-            );
-
-            res.json(thought);
+        const deletedThought = await Thought.findByIdAndDelete(req.params.id);
+        if (!deletedThought) {
+          res.status(404).json({ message: 'No thought with this id!' });
+          return;
         }
-    } catch (err) {
-        res.status(500).json({ message: `Failed to delete thought. ${err}` });
+        res.json(deletedThought);
+        } catch (err) {
+            res.status(404).json({ error: (err as Error).message });
+        }
     }
-};
+    
 
 export const addReaction = async (req: Request, res: Response) => {
     try {
